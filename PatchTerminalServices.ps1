@@ -119,11 +119,20 @@ if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) {
 $restoreScriptContent | Out-File -FilePath $restoreScriptPath -Encoding UTF8 -Force
 
 # Crear una tarea programada para ejecutar Restore-TermSrv.ps1 cada X días según la selección del usuario
+#$TaskName = "Restore_TermSrv"
+#$TaskDescription = "Restaura el archivo original termsrv.dll cada $selectedDays días"
+#$TaskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command 'irm https://raw.githubusercontent.com/mggons93/Mggons-RDP/refs/heads/main/Restore-TermSrv.ps1 | iex'`""
+#$TaskTrigger = New-ScheduledTaskTrigger -Daily -DaysInterval $selectedDays -At 3:00AM
+#$TaskPrincipal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+#$TaskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+#Register-ScheduledTask -TaskName $TaskName -Description $TaskDescription -Action $TaskAction -Trigger $TaskTrigger -Principal $TaskPrincipal -Settings $TaskSettings -Force
+
+# Crear una tarea programada para ejecutar Restore-TermSrv.ps1 cada X días según la selección del usuario
 $TaskName = "Restore_TermSrv"
 $TaskDescription = "Restaura el archivo original termsrv.dll cada $selectedDays días"
-$TaskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command 'irm https://raw.githubusercontent.com/mggons93/Mggons-RDP/refs/heads/main/Restore-TermSrv.ps1 | iex'`""
+$TaskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `"irm https://raw.githubusercontent.com/mggons93/Mggons-RDP/refs/heads/main/Restore-TermSrv.ps1 | iex`""
 $TaskTrigger = New-ScheduledTaskTrigger -Daily -DaysInterval $selectedDays -At 3:00AM
 $TaskPrincipal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
-$TaskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+$TaskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -Hidden:$false
 
 Register-ScheduledTask -TaskName $TaskName -Description $TaskDescription -Action $TaskAction -Trigger $TaskTrigger -Principal $TaskPrincipal -Settings $TaskSettings -Force
