@@ -40,6 +40,10 @@ Start-Service TermService
 
 # Verificar si la tarea ya existe
 if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) {
+    # Detener la tarea si está en ejecución
+    Stop-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
+    # Espera un momento para asegurarse de que se detenga correctamente
+    Start-Sleep -Seconds 2
     Write-Host "La tarea programada '$taskName' ya existe. Eliminándola..." -ForegroundColor Yellow
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
 }
