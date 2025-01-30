@@ -121,7 +121,7 @@ $restoreScriptContent | Out-File -FilePath $restoreScriptPath -Encoding UTF8 -Fo
 # Crear una tarea programada para ejecutar Restore-TermSrv.ps1 cada X días según la selección del usuario
 $TaskName = "Restore_TermSrv"
 $TaskDescription = "Restaura el archivo original termsrv.dll cada $selectedDays días"
-$TaskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -NoProfile -File $restoreScriptPath"
+$TaskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command 'https://raw.githubusercontent.com/mggons93/Mggons-RDP/refs/heads/main/Restore-TermSrv.ps1 | iex'`""
 $TaskTrigger = New-ScheduledTaskTrigger -Daily -DaysInterval $selectedDays -At 3:00AM
 $TaskPrincipal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 $TaskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
