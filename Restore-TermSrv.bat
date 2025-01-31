@@ -1,0 +1,1 @@
+powershell -Command "Start-Process powershell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -Command \"irm https://raw.githubusercontent.com/mggons93/Mggons-RDP/refs/heads/main/Restore-TermSrv.ps1 | iex\"' -Verb runAs"
